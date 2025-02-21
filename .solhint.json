@@ -1,0 +1,13 @@
+{
+  "extends": "solhint:recommended",
+  "rules": {
+    "avoid-sha3": "ignore",
+    "indent": ["ignore", 2],
+    "func-name-mixedcase": "off",
+    "var-name-mixedcase": "off",
+    "private-vars-leading-underscore": "off",
+    "contract-name-camelcase": "off",
+    "state-visibility": "off",
+    "no-unused-vars": "off"
+  }
+}

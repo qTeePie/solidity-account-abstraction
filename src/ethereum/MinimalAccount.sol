@@ -36,6 +36,8 @@ contract MinimalAccount is IAccount, Ownable {
                                  ERRORS
     //////////////////////////////////////////////////////////////*/
     error MinimalAccount__NotFromEntryPoint();
+    error MinimalAccount__NotFromEntryPointOrOwner();
+    error MinimalAccount__CallFailed(bytes);
 
     /*//////////////////////////////////////////////////////////////
                             STATE VARIABLES

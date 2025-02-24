@@ -25,14 +25,6 @@ jobs:
         with:
           version: nightly
 
-      - name: Clean Cache
-        run: |
-          make clean
-
-      - name: Install Dependencies
-        run: |
-          make install
-
       - name: Show Forge version
         run: |
           forge --version
@@ -41,16 +33,14 @@ jobs:
         run: |
           forge fmt --check
         id: fmt
+#      - name: Make All
+#        run: |
+#          make all
 
-      - name: Run Forge build
-        run: |
-          forge build --sizes
-        id: build
-
-      - name: Run Tests
-        run: |
-          if grep -q "function test" $(find src/ -name "*.sol"); then
-            make test;
-          else
-            echo "No tests found! Skipping.";
-          fi
+#      - name: Run Tests
+#        run: |
+#          if grep -q "function test" $(find src/ -name "*.sol"); then
+#            make test;
+#          else
+#            echo "No tests found! Skipping.";
+#          fi

@@ -3,28 +3,41 @@ pragma solidity 0.8.24;
 
 import {Script} from "forge-std/Script.sol";
 import {PackedUserOperation} from "lib/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
+import {IEntryPoint} from "lib/account-abstraction/contracts/interfaces/IEntryPoint.sol";
+import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
+// Local
+import {HelperConfig} from "script/HelperConfig.s.sol";
 
 contract SendPackedUserOp is Script {
+    using MessageHashUtils for bytes32;
+
     function run() public {}
 
-    function generateSignedUserOperation(bytes memory callData, address sender)
+    function generateSignedUserOperation(bytes memory callData, HelperConfig.NetworkConfig memory config)
         public
         view
         returns (PackedUserOperation memory)
     {
         // Step 1. Generate the unsigned data
-        uint256 nonce = vm.getNonce(sender);
-        PackedUserOperation memory unsignedUserOp = _generateUnsignedUserOperation(callData, sender, nonce);
+        uint256 nonce = vm.getNonce(config.account);
+        PackedUserOperation memory userOp = _generateUnsignedUserOperation(callData, config.account, nonce);
 
-        // Step 2. Sign and return it
+        // Step 2. Get userOp Hash
+        bytes32 userOpHash = IEntryPoint(config.entryPoint).getUserOpHash(userOp);
+        bytes32 digest = userOpHash.toEthSignedMessageHash();
+
+        // Step 3. Sign it
     }
 
-    function _generateUnsignedUserOperation(bytes memory callData) internal pure returns (PackedUserOperation memory) {
+    function _generateUnsignedUserOperation(bytes memory callData, address sender, uint256 nonce)
+        internal
+        pure
+        returns (PackedUserOperation memory)
+    {
         uint128 verificationGasLimit = 16777216;
         uint128 callGasLimit = verificationGasLimit;
         uint128 maxPriorityFeePerGas = 256;
         uint128 maxFeePerGas = maxPriorityFeePerGas;
-
         return PackedUserOperation({
             sender: sender,
             nonce: nonce,

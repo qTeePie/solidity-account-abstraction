@@ -33,9 +33,9 @@ jobs:
         run: |
           forge fmt --check
         id: fmt
-#      - name: Make All
-#        run: |
-#          make all
+      - name: Make Clean
+        run: |
+          make clean
 
 #      - name: Run Tests
 #        run: |

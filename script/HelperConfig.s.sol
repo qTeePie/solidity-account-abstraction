@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
-import {Script, console2} from "forge-std/Script.sol";
+import {Script} from "forge-std/Script.sol";
 import {EntryPoint} from "lib/account-abstraction/contracts/core/EntryPoint.sol";
 import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
 
@@ -112,12 +112,10 @@ contract HelperConfig is Script {
         }
 
         // deploy mocks
-        console2.log("Deploying mocks...");
         vm.startBroadcast(ANVIL_DEFAULT_ACCOUNT);
         EntryPoint entryPoint = new EntryPoint();
         ERC20Mock erc20Mock = new ERC20Mock();
         vm.stopBroadcast();
-        console2.log("Mocks deployed!");
 
         localNetworkConfig =
             NetworkConfig({entryPoint: address(entryPoint), usdc: address(erc20Mock), account: ANVIL_DEFAULT_ACCOUNT});
